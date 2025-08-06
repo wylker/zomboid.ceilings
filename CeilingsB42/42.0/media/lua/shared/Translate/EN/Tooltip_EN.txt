@@ -1,0 +1,3 @@
+Tooltip_EN = {
+    Tooltip_craft_customCeilingDesc = "Ceilings must be supported by a nearby wall or an adjacent floor/ceiling tile."
+}

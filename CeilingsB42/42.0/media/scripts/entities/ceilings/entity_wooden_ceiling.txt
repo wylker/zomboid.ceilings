@@ -1,0 +1,55 @@
+module Base
+{
+    xuiSkin default
+    {
+        entity ES_WoodenCeiling_custom
+        {
+            LuaWindowClass  = ISEntityWindow,
+            DisplayName     = Wooden Ceiling,
+            Icon            = Build_FloorTileWood,
+        }
+    }
+    
+    entity WoodenCeilingCustom
+    {
+        component UiConfig
+        {
+            xuiSkin         = default,
+            entityStyle     = ES_WoodenCeiling_custom,
+            uiEnabled       = false,
+        }
+        
+        component SpriteConfig
+        {
+			type            = Ceiling,
+            isThumpable     = false,
+            OnIsValid       = BuildRecipeCode.ceiling.OnIsValid,
+			OnCreate        = BuildRecipeCode.ceiling.OnCreate,
+            
+            face W
+            {
+                layer
+                {
+                    row = ceilings_01_0,
+                }
+            }
+        }
+        
+        component CraftRecipe
+        {
+            timedAction     = BuildWallHammer,
+			tags            = Ceiling,
+            time            = 150,
+            category        = Ceilings,
+            SkillRequired   = Woodwork:3,
+            xpAward         = Woodwork:30,
+            ToolTip         = Tooltip_craft_customCeilingDesc,
+            inputs
+            {
+                item 1 tags[Hammer] mode:keep flags[Prop1;MayDegradeVeryLight],
+                item 1 [Base.Plank],
+                item 5 [Base.Nails],
+            }
+        }
+    }
+}

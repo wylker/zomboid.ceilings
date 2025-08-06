@@ -1,0 +1,55 @@
+module Base
+{
+    xuiSkin default
+    {
+        entity ES_MetalCeiling_custom
+        {
+            LuaWindowClass  = ISEntityWindow,
+            DisplayName     = Metal Ceiling,
+            Icon            = Build_FloorTileMetal,
+        }
+    }
+    
+    entity MetalCeilingCustom
+    {
+        component UiConfig
+        {
+            xuiSkin         = default,
+            entityStyle     = ES_MetalCeiling_custom,
+            uiEnabled       = false,
+        }
+        
+        component SpriteConfig
+        {
+			type            = Ceiling,
+            isThumpable     = false,
+            OnIsValid       = BuildRecipeCode.ceiling.OnIsValid,
+			OnCreate        = BuildRecipeCode.ceiling.OnCreate,
+            
+            face W
+            {
+                layer
+                {
+                    row = roofs_04_54,
+                }
+            }
+        }
+        
+        component CraftRecipe
+        {
+            timedAction   = BuildWallMetal,
+			tags          = Ceiling,
+            time          = 200,
+            category      = Ceilings,
+            SkillRequired = MetalWelding:3,
+            xpAward       = MetalWelding:30,
+            ToolTip       = Tooltip_craft_customCeilingDesc,
+            inputs
+            {
+                item 4 [Base.BlowTorch] flags[DontRecordInput],
+                item 4 [Base.SmallSheetMetal],
+                item 2 [Base.WeldingRods] flags[DontRecordInput],
+            }
+        }
+    }
+}
