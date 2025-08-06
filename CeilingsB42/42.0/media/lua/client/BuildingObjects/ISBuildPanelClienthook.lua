@@ -28,8 +28,6 @@ local function isCeilingRecipe(recipe)
     local tagChecks = {
         function() return recipe:getTags() end,
         function() return recipe.tags end,
-        function() return recipe:getTag() end,
-        function() return recipe.tag end,
     }
     
     for i, check in ipairs(tagChecks) do
@@ -87,4 +85,5 @@ end
 print("ISBuildPanelHook - ISBuildPanel hook installed successfully!")
 print("  - Will detect ceiling entities via recipe tags")  
 print("  - Will flag ceiling entities for other hooks to handle")
+
 print("  - All custom logic delegated to existing DoTileBuilding and ISBuildAction hooks")
