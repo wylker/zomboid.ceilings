@@ -8,6 +8,7 @@ Build ceilings at the z+1 level above your character! This mod integrates with P
 - **Realistic Validation**: Ceilings require proper structural support (walls or adjacent floors)
 - **Visual Feedback**: Ghost preview shows where ceilings can be built along with ground ghost for reduced eyeball damage
 - **Extensible System**: Easy for modders to add their own ceiling pieces
+- **Comes included with a wood and a metal ceiling entity
 
 ## How It Works
 
