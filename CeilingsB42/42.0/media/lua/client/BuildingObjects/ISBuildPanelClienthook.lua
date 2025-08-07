@@ -5,13 +5,11 @@
 
 print("ISBuildPanelHook - Loading ISBuildPanel hook...")
 
--- Check if ISBuildPanel is available
 if not ISBuildPanel then
     print("ISBuildPanelHook - ERROR: ISBuildPanel not found!")
     return
 end
 
--- Store original function
 local originalCreateBuildIsoEntity = ISBuildPanel.createBuildIsoEntity
 
 print("ISBuildPanelHook - Original ISBuildPanel.createBuildIsoEntity stored")
@@ -24,7 +22,6 @@ local function isCeilingRecipe(recipe)
         return false 
     end
     
-    -- Try different ways to access recipe tags
     local tagChecks = {
         function() return recipe:getTags() end,
         function() return recipe.tags end,
@@ -35,19 +32,16 @@ local function isCeilingRecipe(recipe)
         if success and tags then
             
             if type(tags) == "string" then
-                -- Single tag as string
                 if tags == "ceiling" or string.find(string.lower(tags), "ceiling") then
                     print("ISBuildPanelHook - *** CEILING TAG DETECTED (string): " .. tags .. " ***")
                     return true
                 end
             elseif tags.contains then
-                -- Tag collection with contains method
                 if tags:contains("ceiling") or tags:contains("Ceiling") then
                     print("ISBuildPanelHook - *** CEILING TAG DETECTED (collection) ***")
                     return true
                 end
             elseif type(tags) == "table" then
-                -- Table of tags
                 for _, tag in ipairs(tags) do
                     if tag == "ceiling" or tag == "Ceiling" then
                         print("ISBuildPanelHook - *** CEILING TAG DETECTED (table): " .. tag .. " ***")
@@ -62,7 +56,7 @@ local function isCeilingRecipe(recipe)
 end
 
 --************************************************************************--
---** Hook ISBuildPanel:createBuildIsoEntity - Detect and flag ceiling entities
+--** Hook ISBuildPanel:createBuildIsoEntity - Minimal render override for ceiling
 --************************************************************************--
 function ISBuildPanel:createBuildIsoEntity(dontSetDrag)
     -- Call original function first
@@ -70,20 +64,43 @@ function ISBuildPanel:createBuildIsoEntity(dontSetDrag)
     
     -- Check if we created a ceiling entity
     if self.buildEntity and self.buildEntity.craftRecipe and isCeilingRecipe(self.buildEntity.craftRecipe) then
-        print("ISBuildPanelHook - *** CEILING ENTITY DETECTED! Flagging for custom handling ***")
+        print("ISBuildPanelHook - *** CEILING ENTITY DETECTED! Applying minimal render override ***")
         
-        -- Flag this entity as a ceiling build for other hooks to detect
+        -- Add our custom flags (safe)
         self.buildEntity.isCeilingBuild = true
-        
-        -- Store the player's current z-level when the dragging object is created
         local currentZ = self.player:getCurrentSquare():getZ()
         self.buildEntity.originalZ = currentZ
         self.buildEntity.ceilingZ = currentZ + 1
+        
+        -- MINIMAL OVERRIDE: Render ceiling ghost + synced floor ghost
+        local originalRender = self.buildEntity.render
+        self.buildEntity.render = function(selfRender, x, y, z, square)
+            -- Always render at ceiling level instead of floor level
+            local ceilingZ = selfRender.ceilingZ or (z + 1)
+            local ceilingSquare = getCell():getGridSquare(x, y, ceilingZ)
+            if not ceilingSquare and getWorld():isValidSquare(x, y, ceilingZ) then
+                ceilingSquare = getCell():createNewGridSquare(x, y, ceilingZ, true)
+            end
+            
+            if ceilingSquare then
+                -- Render ceiling ghost at z+1
+                originalRender(selfRender, x, y, ceilingZ, ceilingSquare)
+                
+                -- Get ceiling validity
+                local ceilingValid = selfRender:isValid(ceilingSquare, selfRender.north)
+                
+                local floorCursor = selfRender:getFloorCursorSprite()
+                if ceilingValid then
+                    -- Green ghost tile
+                    floorCursor:RenderGhostTileColor(x, y, z, 0.0, 1.0, 0.0, 0.8)
+                else
+                    -- Red ghost tile
+                    floorCursor:RenderGhostTileRed(x, y, z)
+                end
+            end
+        end
+        --print("ISBuildPanelHook - Minimal ceiling render override applied")
     end
 end
 
 print("ISBuildPanelHook - ISBuildPanel hook installed successfully!")
-print("  - Will detect ceiling entities via recipe tags")  
-print("  - Will flag ceiling entities for other hooks to handle")
-
-print("  - All custom logic delegated to existing DoTileBuilding and ISBuildAction hooks")
