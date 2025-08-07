@@ -1,5 +1,5 @@
 --***********************************************************
---**                    BUILD ROOF B42                     **
+--**                    Ceilings B42                       **
 --**    Ceiling-Specific Server-side Build Recipe Code     **
 --***********************************************************
 
@@ -195,5 +195,6 @@ function BuildRecipeCode.ceiling.OnCreate(params)
     square:setSquareChanged()
     thumpable:invalidateRenderChunkLevel(FBORenderChunk.DIRTY_OBJECT_ADD)
 end
+
 
 print("BuildCeilingCode - Ceiling build recipe functions loaded successfully!")
