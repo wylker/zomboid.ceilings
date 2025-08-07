@@ -18,18 +18,14 @@ The mod uses a multi-hook approach to intercept and modify the building system:
 - Detects ceiling entities by checking for `ceiling` tag in recipes
 - Flags detected entities with `isCeilingBuild = true`
 - Stores z-level information for other hooks
+- Detected entities are run through custom rendering for building ghost + guide sprite
 
-### 2. Ghost Rendering (`DoTileBuildingSharedHook.lua`)
-- Renders ceiling ghost at z+1 level
-- Shows correct validity state for ceiling placement
-- Maintains floor ghost at z+0 for positioning reference
-
-### 3. Building Action (`ISBuildActionClientHook.lua`)
+### 2. Building Action (`ISBuildActionClientHook.lua`)
 - Intercepts build commands for ceiling entities
 - Redirects construction to z+1 level
 - Ensures ceiling is built at correct elevation
 
-### 4. Server Validation (`BuildCeilingServer.lua`)
+### 3. Server Validation (`BuildCeilingServer.lua`)
 - Validates ceiling placement with structural requirements
 - Checks for proper support (walls or adjacent floors)
 - Handles ceiling creation and integration
@@ -40,11 +36,10 @@ The mod uses a multi-hook approach to intercept and modify the building system:
 - Ceiling detection via recipe tags
 - Building at z+1 level
 - Correct validation logic with structural requirements
-- Ceiling ghost shows proper validity (green/red)
+- Ghosts have mirrored validation state
 
 **Known Limitations:**
-- Floor ghost (z+0) shows different validity than ceiling ghost (z+1)
-- Users should reference the ceiling ghost for accurate placement feedback
+- Ceilings built will sometimes not render correctly (appear/disappear) from the player perspective without leaving the area or re-loading the save.
 
 ## Validation Rules
 
@@ -128,9 +123,8 @@ That's it! Your ceiling piece will automatically:
 ### Hook Priority
 The mod uses a careful hook sequence:
 1. `ISBuildPanel` detects ceiling entities first
-2. `DoTileBuilding` renders ghosts during mouse movement
-3. `ISBuildAction` handles actual building when clicked
-4. Server validation runs when needed
+2. `ISBuildAction` handles actual building when clicked
+3. Server validation runs when needed
 
 ### Compatibility
 - Works with any entity using the ceiling tag system
@@ -142,10 +136,12 @@ The mod uses a careful hook sequence:
 For issues or questions:
 - Check console logs if ceiling detection isn't working
 - Ensure your entities have the correct `tags = ceiling` property
+- Post a new issue here
 
 ## Version History
 
-- **v1.0**: Initial release with working ceiling system
+- **v1.10**: Fixed ghost sprite to mirror IsValid status of build sprite - thanks Alex for pointing me in the right direction
+- **v1.00**: Initial release with working ceiling system
 - Full z+1 building support
 - Extensible tag-based detection
 
