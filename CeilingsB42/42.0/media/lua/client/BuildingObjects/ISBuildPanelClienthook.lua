@@ -1,5 +1,5 @@
 --***********************************************************
---**                    BUILD ROOF B42                     **
+--**                    Ceilings! B42                      **
 --**   Client-Side ISBuildPanel Hook for Ceiling Entities  **
 --***********************************************************
 
@@ -104,3 +104,4 @@ function ISBuildPanel:createBuildIsoEntity(dontSetDrag)
 end
 
 print("ISBuildPanelHook - ISBuildPanel hook installed successfully!")
+
