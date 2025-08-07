@@ -1,5 +1,5 @@
 --***********************************************************
---**                    BUILD ROOF B42                     **
+--**                    Ceilings! B42                      **
 --**        ISBuildActionClient Hook for Building at z+1   **
 --***********************************************************
 
@@ -102,5 +102,6 @@ function ISBuildAction:perform()
     -- Call original perform function (it will use our modified z coordinate)
     originalISBuildActionPerform(self)
 end
+
 
 print("ISBuildActionClientHook - ISBuildAction hooks installed successfully!")
