@@ -1,6 +1,6 @@
 # Ceilings Mod for Project Zomboid B42
 
-Build ceilings at the z+1 level above your character! This mod integrates with Project Zomboid's new B42 building system to enable ceiling construction that follows realistic structural requirements.
+Build ceilings at the z+1 level above your character! This mod integrates with Project Zomboid's new B42 building system to enable ceiling construction with support constraints.
 
 ## Features
 
