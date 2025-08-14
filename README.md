@@ -142,8 +142,8 @@ For issues or questions:
 
 - **v1.10**: Fixed ghost sprite to mirror IsValid status of build sprite - thanks Alex for pointing me in the right direction
 - **v1.00**: Initial release with working ceiling system
-- Full z+1 building support
-- Extensible tag-based detection
+-- Full z+1 building support
+-- Extensible tag-based detection
 
 ## To-Do
-- Sync vanilla floor "ghost" with ceiling "ghost" for OnValid checks
+- Nothing ATM!
