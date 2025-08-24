@@ -40,6 +40,7 @@ The mod uses a multi-hook approach to intercept and modify the building system:
 
 **Known Limitations:**
 - Ceilings built will sometimes not render correctly (appear/disappear) from the player perspective without leaving the area or re-loading the save.
+- Incompatible with mods that override the vanilla building panel ie. Neat Building
 
 ## Validation Rules
 
@@ -146,4 +147,4 @@ For issues or questions:
 -- Extensible tag-based detection
 
 ## To-Do
-- Nothing ATM!
+- Move hook to IsBuildIsoEntity if possible to avoid conflicts with UI mods
